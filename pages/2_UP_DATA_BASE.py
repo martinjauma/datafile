@@ -1,6 +1,6 @@
 import streamlit as st
 from classUpload import get_processor
-import streamlit as st
+from classFiltros import Filtros
 
 st.set_page_config(layout="wide")
 st.title("Subir Base de Datos")
@@ -40,3 +40,32 @@ if tipo_seleccionado != "Selecciona un tipo...":
                 st.dataframe(df)
                 st.session_state['df_subido'] = df
                 st.success("El archivo ha sido procesado y está listo.")
+
+                # Allow user to select columns for filtering
+                st.subheader("Selecciona Columnas para Filtrar")
+                columnas_disponibles = df.columns.tolist()
+                columnas_seleccionadas = st.multiselect(
+                    "Elige las columnas que deseas usar como filtros en la barra lateral:",
+                    columnas_disponibles,
+                    key="columnas_para_filtrar"
+                )
+                st.session_state['columnas_filtrables'] = columnas_seleccionadas
+
+# Sidebar filtering logic
+if 'df_subido' in st.session_state and not st.session_state['df_subido'].empty:
+    st.sidebar.title("Filtros")
+    df_para_filtrar = st.session_state['df_subido'].copy()
+
+    if 'columnas_filtrables' in st.session_state and st.session_state['columnas_filtrables']:
+        filtro_manager = Filtros(df_para_filtrar)
+        df_filtrado = filtro_manager.crear_filtros_dependientes(st.session_state['columnas_filtrables'])
+        
+        st.subheader("Datos Filtrados")
+        st.write(f"Mostrando {len(df_filtrado)} de {len(st.session_state['df_subido'])} registros.")
+        st.dataframe(df_filtrado)
+    else:
+        st.subheader("Datos Originales")
+        st.dataframe(df_para_filtrar)
+
+
+
