@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environment
+venv/
+
+# IDEs and editors
+.DS_Store
+.vscode/
+
+# Streamlit secrets
+.streamlit/secrets.toml
+
+# Data files (if generated or temporary)
+ANGLES_ARCHIVOS/
