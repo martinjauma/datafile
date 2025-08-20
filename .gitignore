@@ -17,3 +17,7 @@ venv/
 
 # Data files (if generated or temporary)
 ANGLES_ARCHIVOS/
+wyscout/
+*.csv
+*.xml
+*.json
